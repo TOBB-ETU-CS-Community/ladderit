@@ -9,6 +9,9 @@ contract Ladderit {
         string  name;
     }
 
+    mapping(uint256 => bool) private dailyTasks;
+
+    event TaskCompleted (uint256 indexed taskID);
     mapping (address => User) public users;
 
     event UserName (string indexed name);
@@ -27,5 +30,18 @@ contract Ladderit {
         user.name = _name;
         user.client = msg.sender;
         emit UserName(user.name);
+
+        
+    }
+
+
+    function completeTask (uint256 taskID) public {
+        require(!dailyTasks[taskID], "Task already completed.");
+        dailyTasks[taskID] = true;
+        emit TaskCompleted(taskID);
+    }
+
+    function isTaskCompleted (uint256 taskID) public view returns(bool){
+        return dailyTasks[taskID];
     }
 }
