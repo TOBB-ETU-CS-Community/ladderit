@@ -19,10 +19,22 @@ contract Ladderit {
 
     mapping (address => User) public users;
 
+    mapping (string => bool) public isTaken;
+
     event UserName (string indexed name);
     
     
     mapping(address => Task[]) public userTasks;
+
+    function getUserName(string memory _name) public {
+        User storage user = users[msg.sender];
+        require(!isTaken[_name], "Name is already taken");
+        user.name = _name;
+        user.client = msg.sender;
+        require(bytes(users[msg.sender].name).length > 0, "Name cannot be empty");
+        isTaken[_name] = true;
+        emit UserName(user.name);
+    }
     
     function addTask(string memory _description) public {
         require(userTasks[msg.sender].length < 5, "Maximum task limit reached");
@@ -41,25 +53,7 @@ contract Ladderit {
         userTasks[msg.sender].pop();
     }
 
-    function getUserName(string memory _name) public {
-        require(bytes(users[msg.sender].name).length == 0, "User already registered");
-        User storage user = users[msg.sender];
-        user.name = _name;
-        user.client = msg.sender;
-        emit UserName(user.name);
-    }
-
-    function updateUserName(string memory _name) public {
-        require(bytes(users[msg.sender].name).length > 0 );
-        User storage user = users[msg.sender];
-        user.name = _name;
-        user.client = msg.sender;
-        emit UserName(user.name);
-
-        
-    }
-
-
+    
     function completeTask (uint256 taskID) public {
         require(!dailyTasks[taskID], "Task already completed.");
         dailyTasks[taskID] = true;
