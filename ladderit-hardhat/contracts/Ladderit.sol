@@ -43,12 +43,23 @@ contract Ladderit {
 
     function getUserName(string calldata _name) external {
         User storage user = users[msg.sender];
-        require(!isTaken[_name], "Name is already taken");
-        require(bytes(user.name).length == 0, "User already registered");
+        require(!isTaken[_name], "Name is already taken"); 
         user.name = _name;
         user.client = msg.sender;
         isTaken[_name] = true;
 
+        emit UserName(user.name);
+    }
+
+    function updateUserName(string memory _name) public {
+        User storage user = users[msg.sender];
+        isTaken[user.name] = false;
+        require(!isTaken[_name], "Name is already taken");
+        require(bytes(user.name).length > 0, "You are not registered");
+        user.name = _name;
+        user.client = msg.sender;
+        require(bytes(users[msg.sender].name).length > 0, "Name cannot be empty");
+        isTaken[_name] = true;
         emit UserName(user.name);
     }
 
