@@ -15,6 +15,8 @@ contract Ladderit {
     event TaskCompleted(uint256 indexed taskID);
     event UserName(string indexed name);
 
+    /// @notice Get users tasks
+    /// @param _task User' s task to complete upon days
     function addTask(string calldata _task) external {
         require(
             msg.sender == users[msg.sender].client,
@@ -28,7 +30,10 @@ contract Ladderit {
         user.tasks.push(_task);
     }
 
-    function getTasks() public view returns (string[] memory) {
+    /**
+     * 
+     */
+    function getTasks() public view returns (string[] memory name) {
         return users[msg.sender].tasks;
     }
 
@@ -41,6 +46,10 @@ contract Ladderit {
         return selectedTask;
     }
 
+    /**
+     * @notice
+     * @param _name 
+     */
     function getUserName(string calldata _name) external {
         User storage user = users[msg.sender];
         require(!isTaken[_name], "Name is already taken"); 
