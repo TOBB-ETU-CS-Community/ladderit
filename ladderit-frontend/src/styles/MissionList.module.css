@@ -1,0 +1,96 @@
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: linear-gradient(90deg, var(--oxford-blue), var(--ultra-violet));
+  border: 1px solid var(--ultra-violet);
+  border-radius: 8px;
+  transform: perspective(5000px) rotateY(45deg) rotateX(45deg);
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+
+.card::before,
+.card::after {
+  content: "";
+  position: absolute;
+  border-radius: inherit;
+  transition: background-color 0.75s;
+}
+
+.card::after {
+  inset: -1rem;
+  background: linear-gradient(-45deg, blue, red);
+  transform: translateZ(-50px);
+}
+
+.card::before {
+  inset: 0.75rem;
+  background: black;
+  transform: translateZ(-49px);
+  filter: blur(15px);
+  opacity: 0.5;
+}
+
+.card:hover {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  transform: rotateY(0);
+  box-shadow: 10px 10px 0px black;
+}
+
+.card:hover::before,
+.card:hover::after {
+  background: transparent;
+}
+
+.cardChanging {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  background-color: var(--oxford-blue);
+  transform: rotateX(0) rotateY(0);
+}
+
+.cardLabel {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  padding-left: 24px;
+}
+
+.cardInput {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.cardSpan {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  border: 1px solid var(--background-color);
+  border-radius: 50px;
+}
+
+.cardChanging input:checked ~ .cardSpan {
+  background-color: #1aa93b;
+  border-color: var(--background-color);
+}
+
+.cardChanging input:checked ~ .cardSpan:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 1px;
+  left: 6px;
+  width: 10px;
+  height: 17px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
