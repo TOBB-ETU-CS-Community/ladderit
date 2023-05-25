@@ -42,6 +42,7 @@ contract Ladderit {
         user.tasks[taskIndex] = "";
         return selectedTask;
     }
+    
     /**
      * @notice Adds the name of the newly registered person
      * @dev Cannot register with a previously saved name
@@ -86,6 +87,7 @@ contract Ladderit {
 
         emit TaskCompleted(taskID);
     }
+
     /**
      * @notice It checks whether the task has been completed or not.
      * @param taskID is the ID of task that allows us to understand which task has been completed.
