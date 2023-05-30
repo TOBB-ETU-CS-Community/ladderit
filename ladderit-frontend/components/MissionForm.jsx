@@ -1,17 +1,34 @@
+"use client";
+import { useState } from "react";
+
 export default function MissionForm() {
+  const [missions, setMissions] = useState([]);
+  const [text, setText] = useState("");
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    setMissions((prev) => [...prev, text]);
+  };
+
+  console.log(missions);
+
+  const handleText = (e) => {
+    setText(e.target.value);
+  };
+
   return (
-    <div>
-      <fieldset>
-        <legend className="ml-px p-2 bg-ultraViolet text-bgColor rounded-md">
-          Add Missions
-        </legend>
-        <form className="w-full h-full p-12 flex flex-col border border-solid border-ultraViolet rounded-md">
-          <input className="h-[1.80rem] pl-2 rounded-xl border border-solid border-ultraViolet focus:outline-none" />
-          <button className="mt-8 py-2 bg-ultraViolet text-bgColor rounded-3xl">
-            Add
-          </button>
-        </form>
-      </fieldset>
-    </div>
+    <form
+      className="w-1/2 h-72 p-12 flex flex-col justify-between bg-ultraViolet border border-solid border-ultraViolet rounded-md"
+      onSubmit={handleFormSubmit}>
+      <h2 className="text-2xl text-bgColor text-center">Add Missions</h2>
+      <input
+        className="h-[1.80rem] pl-2 py-4 rounded-xl border border-solid border-ultraViolet focus:outline-none"
+        value={text}
+        onChange={handleText}
+      />
+      <button className="mx-auto py-2 w-1/2 bg-bgColor rounded-3xl hover:bg-[#6A666C] hover:text-bgColor">
+        Add
+      </button>
+    </form>
   );
 }
