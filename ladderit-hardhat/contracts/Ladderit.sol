@@ -2,7 +2,9 @@
 pragma solidity ^0.8.17;
 
 interface IMyNFT {
-    function mint(address to, uint256 tokenId) external; 
+    function balanceOf(address owner) external view returns (uint256);
+    function safeMint(address to, uint256 tokenId) external;
+    function onERC721Received(address operator, address from, uint256 tokenId, bytes calldata data) external returns (bytes4);
 }
 
 contract Ladderit {
@@ -103,11 +105,14 @@ contract Ladderit {
         dailyTaskLimit[msg.sender]++;
         countTaskCompleted[taskID]++;
         emit TaskCompleted(taskID);
-        if (countTaskCompleted[taskID] == 1) {
+        if (countTaskCompleted[taskID] == 3) {
             earnBronzeNFT();
         }
         if (countTaskCompleted[taskID] == 5) {
             earnSilverNFT();
+        }
+         if (countTaskCompleted[taskID] == 7) {
+            earnGoldNFT();
         }
     }
 
@@ -124,10 +129,27 @@ contract Ladderit {
         dailyTaskLimit[msg.sender] = 0;
     }
 
-    function earnSilverNFT() private {} // This part is under construction.
-
     function earnBronzeNFT() public {
-        nftContract.mint(msg.sender, tokenId);
+        nftContract.safeMint(msg.sender, tokenId);
         tokenId++;
+    }
+
+    function earnSilverNFT() private {
+        nftContract.safeMint(msg.sender, tokenId);
+        tokenId++;
+    } 
+
+
+    function earnGoldNFT() public {
+        nftContract.safeMint(msg.sender, tokenId);
+        tokenId++;
+    }
+
+    function onERC721Received(address, address, uint256) external pure returns (bytes4) {
+    return bytes4(keccak256("onERC721Received(address,address,uint256)"));
+    }
+
+    function balanceOf(address account) public view returns (uint256){
+        return nftContract.balanceOf(account);
     }
 }
