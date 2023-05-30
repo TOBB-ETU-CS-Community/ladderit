@@ -1,16 +1,10 @@
 "use client";
-import { useState } from "react";
 
-export default function MissionForm() {
-  const [missions, setMissions] = useState([]);
-  const [text, setText] = useState("");
-
+export default function MissionForm({ text, setText, setMissions }) {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setMissions((prev) => [...prev, text]);
   };
-
-  console.log(missions);
 
   const handleText = (e) => {
     setText(e.target.value);

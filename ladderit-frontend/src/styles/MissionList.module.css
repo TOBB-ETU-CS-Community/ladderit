@@ -59,6 +59,7 @@
   position: relative;
   cursor: pointer;
   padding-left: 24px;
+  margin-left: 25px;
 }
 
 .cardInput {
