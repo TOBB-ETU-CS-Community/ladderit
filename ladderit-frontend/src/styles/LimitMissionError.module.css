@@ -1,11 +1,47 @@
 .container {
   height: 50px;
-  width: 250px;
+  width: 350px;
   position: absolute;
   right: 0;
   top: 100px;
-  background-color: red;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 5px;
+  background-color: var(--oxford-blue);
   color: var(--background-color);
   text-align: center;
-  margin: auto;
+  animation: show_toast 0.3s ease forwards;
+}
+
+.container::before {
+  position: absolute;
+  content: "";
+  height: 3px;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  background-color: red;
+  animation: progress 2.5s linear forwards;
+}
+
+@keyframes show_toast {
+  0% {
+    transform: translateX(100%);
+  }
+  40% {
+    transform: translateX(-5%);
+  }
+  80% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-10px);
+  }
+}
+
+@keyframes progress {
+  100% {
+    width: 0;
+  }
 }
