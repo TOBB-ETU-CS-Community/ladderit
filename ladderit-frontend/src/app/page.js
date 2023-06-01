@@ -10,8 +10,7 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {/* {missions.length > 5 && <LimitMissionError />} */}
-      <LimitMissionError />
+      {missions.length > 5 && <LimitMissionError />}
       <MissionForm text={text} setText={setText} setMissions={setMissions} />
       <MissionList missions={missions} />
     </main>

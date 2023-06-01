@@ -1,8 +1,8 @@
 .container {
   height: 50px;
-  width: 350px;
-  position: absolute;
-  right: 0;
+  width: 325px;
+  position: fixed;
+  right: 10px;
   top: 100px;
   display: flex;
   align-items: center;
@@ -22,7 +22,11 @@
   bottom: 0;
   left: 0;
   background-color: red;
-  animation: progress 2.5s linear forwards;
+  animation: progress 3s linear forwards;
+}
+
+.hide {
+  animation: hide_toast 0.3s ease forwards;
 }
 
 @keyframes show_toast {
@@ -37,6 +41,21 @@
   }
   100% {
     transform: translateX(-10px);
+  }
+}
+
+@keyframes hide_toast {
+  0% {
+    transform: translateX(-10px);
+  }
+  40% {
+    transform: translateX(0);
+  }
+  80% {
+    transform: translateX(-5%);
+  }
+  100% {
+    transform: translateX(calc(100% + 10px));
   }
 }
 
