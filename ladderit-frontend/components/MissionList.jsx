@@ -3,19 +3,21 @@ import { useState } from "react";
 import styles from "../src/styles/MissionList.module.css";
 
 export default function MissionList({ missions }) {
-  const [isSelected, setIsSelected] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
 
-  const handleClick = () => {
-    setIsSelected(true);
+  const handleClick = (index) => {
+    setSelectedItems((prevSelectedItems) => {
+      const updatedSelectedItems = [...prevSelectedItems];
+      updatedSelectedItems[index] = !updatedSelectedItems[index];
+      return updatedSelectedItems;
+    });
   };
 
-  let id;
-
-  return missions.map((mission) => (
-    <div className="mt-16 w-2/3 h-24" key={id}>
+  return missions.map((mission, index) => (
+    <div className="mt-16 w-2/3 h-24" key={index}>
       <div
-        className={isSelected ? styles.cardChanging : styles.card}
-        onClick={handleClick}>
+        className={selectedItems[index] ? styles.cardChanging : styles.card}
+        onClick={() => handleClick(index)}>
         <label className={styles.cardLabel}>
           <input type="checkbox" className={styles.cardInput} />
           <span className={styles.cardSpan}></span>
