@@ -1,7 +1,6 @@
 const fs = require("fs");
 require("dotenv").config({ path: ".env" });
 
-const ALCHEMY_HTTP_URL = process.env.ALCHEMY_HTTP_URL;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 
 const Location = {
@@ -31,9 +30,6 @@ const requestConfig = {
   codeLanguage: CodeLanguage.JavaScript,
   // String containing the source code to be executed
   source: fs.readFileSync("./Functions-request.source.js").toString(),
-  //source: fs.readFileSync('./API-request-example.js').toString(),
-  // Secrets can be accessed within the source code with `secrets.varName` (ie: secrets.apiKey). The secrets object can only contain string values.
-  //secrets: { apiKey: process.env.COINMARKETCAP_API_KEY ?? "" },
   // Per-node secrets objects assigned to each DON member. When using per-node secrets, nodes can only use secrets which they have been assigned.
   perNodeSecrets: [],
   // ETH wallet key used to sign secrets so they cannot be accessed by a 3rd party
@@ -41,7 +37,7 @@ const requestConfig = {
   // Args (string only array) can be accessed within the source code with `args[index]` (ie: args[0]).
   // args: ["1", "bitcoin", "btc-bitcoin", "btc", "1000000", "450"],
   // Expected type of the returned value
-  expectedReturnType: ReturnType.uint256,
+  expectedReturnType: ReturnType.string,
   // Redundant URLs which point to encrypted off-chain secrets
   secretsURLs: [],
 };

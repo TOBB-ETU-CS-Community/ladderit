@@ -5,7 +5,14 @@
   },
   "dependencies": {
     "@chainlink/contracts": "^0.6.1",
-    "@openzeppelin/contracts-upgradeable": "^4.9.0",
-    "dotenv": "^16.0.3"
+    "@chainlink/env-enc": "^1.0.5",
+    "@openzeppelin/contracts": "^4.9.1",
+    "@openzeppelin/contracts-upgradeable": "^4.9.1",
+    "axios": "^1.4.0",
+    "dotenv": "^16.1.4",
+    "eth-crypto": "^2.6.0",
+    "is-http-url": "^2.0.0",
+    "prompt-sync": "^4.2.0",
+    "vm2": "^3.9.19"
   }
 }

@@ -3,7 +3,8 @@
 
 // make HTTP request
 const url = `https://timeapi.io/api/Time/current/coordinate?latitude=38.9&longitude=-77.03`;
-console.log(`HTTP GET Request to ${url}?fsyms=${fromSymbol}&tsyms=${toSymbol}`);
+// console.log(`HTTP GET Request to ${url}?fsyms=${fromSymbol}&tsyms=${toSymbol}`);
+console.log(`HTTP GET Request to ${url}`);
 
 const timeRequest = Functions.makeHttpRequest({
   url: url,
@@ -26,10 +27,11 @@ if (data.Response === "Error") {
   throw Error(`Functional error. Read message: ${data.Message}`);
 }
 
-// extract the price
-// const price = data["RAW"][fromSymbol][toSymbol]["PRICE"];
-// console.log(`${fromSymbol} price is: ${price.toFixed(2)} ${toSymbol}`);
+// extract the time
+const date = data["date"];
+console.log(`The date is ${date}`);
 
 // Solidity doesn't support decimals so multiply by 100 and round to the nearest integer
 // Use Functions.encodeUint256 to encode an unsigned integer to a Buffer
 // return Functions.encodeUint256(Math.round(price * 100));
+return Functions.encodeString(date);
