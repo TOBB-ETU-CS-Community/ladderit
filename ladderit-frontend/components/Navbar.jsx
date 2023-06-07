@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-// import { ConnectWallet } from "@thirdweb-dev/react";
+import { ConnectWallet } from "@thirdweb-dev/react";
 
 export default function Navbar() {
   return (
@@ -8,8 +8,8 @@ export default function Navbar() {
       <Link href="/" className="text-3xl">
         LADDERIT
       </Link>
-      <Link href="/">Register</Link>
-      {/* <ConnectWallet className="grow-0" /> */}
+      <Link href="/register">Register</Link>
+      <ConnectWallet theme="light" btnTitle="Connect Wallet" />
     </div>
   );
 }
