@@ -1,12 +1,13 @@
 const ethcrypto = require("eth-crypto");
 const axios = require("axios");
 const fs = require("fs").promises;
+require("@chainlink/env-enc").config();
 
 async function main() {
   // Provider config currently set for Polygon Mumbai
 
   const provider = new ethers.providers.JsonRpcProvider(
-    process.env.ALCHEMY_HTTP_URL
+    process.env["POLYGON_MUMBAI_RPC_URL"]
   );
 
   // Get private wallet key from the .env file
@@ -16,7 +17,7 @@ async function main() {
   // Consumer contract
   const consumerAddress = "0x1Be673b59696aBfdc10560C17f52AAd2b62902cA";
   const consumerAbiPath =
-    "../artifacts/contracts/FunctionsConsumer.sol/FunctionsConsumer.json";
+    "./artifacts/contracts/FunctionsConsumer.sol/FunctionsConsumer.json";
 
   const contractAbi = JSON.parse(
     await fs.readFile(consumerAbiPath, "utf8")
@@ -38,7 +39,7 @@ async function main() {
   const requestGas = 5500000;
 
   // Default example
-  const source = await fs.readFile("../Functions-request-source.js", "utf8");
+  const source = await fs.readFile("./Functions-request-source.js", "utf8");
   const args = ["ETH", "USD"];
 
   // Create an oracle contract object.

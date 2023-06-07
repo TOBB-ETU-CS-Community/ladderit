@@ -1,7 +1,5 @@
 const fs = require("fs");
-require("dotenv").config({ path: ".env" });
-
-const PRIVATE_KEY = process.env.PRIVATE_KEY;
+require("@chainlink/env-enc").config();
 
 const Location = {
   Inline: 0,
@@ -33,7 +31,7 @@ const requestConfig = {
   // Per-node secrets objects assigned to each DON member. When using per-node secrets, nodes can only use secrets which they have been assigned.
   perNodeSecrets: [],
   // ETH wallet key used to sign secrets so they cannot be accessed by a 3rd party
-  walletPrivateKey: PRIVATE_KEY,
+  walletPrivateKey: process.env["PRIVATE_KEY"],
   // Args (string only array) can be accessed within the source code with `args[index]` (ie: args[0]).
   // args: ["1", "bitcoin", "btc-bitcoin", "btc", "1000000", "450"],
   // Expected type of the returned value
