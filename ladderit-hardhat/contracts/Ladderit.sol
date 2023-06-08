@@ -3,12 +3,17 @@ pragma solidity 0.8.17;
 
 interface IMyNFT {
     function balanceOf(address owner) external view returns (uint256);
-    function safeMint(address to, uint256 tokenId) external;
-    function onERC721Received(address operator, address from, uint256 tokenId, bytes calldata data) external returns (bytes4);
+
+    function mint() external;
+}
+
+interface IMyCoin {
+    function coinMint(uint256 amount) external;
 }
 
 contract Ladderit {
     IMyNFT nftContract;
+    IMyCoin coinContract;
 
     struct User {
         address client;
@@ -22,13 +27,13 @@ contract Ladderit {
     mapping(uint256 => uint256) public countTaskCompleted;
     mapping(address => uint256) public dailyTaskLimit;
     uint256 dailyLimit = 1;
-    uint256 public tokenId;
 
     event TaskCompleted(uint256 indexed taskID);
     event UserName(string indexed name);
 
-    constructor(address _nftContract) {
+    constructor(address _nftContract, address _coinContract) {
         nftContract = IMyNFT(_nftContract);
+        coinContract = IMyCoin(_coinContract);
     }
 
     function addTask(string calldata _task) external {
@@ -44,7 +49,7 @@ contract Ladderit {
         user.tasks.push(_task);
     }
 
-    function getTasks() public view returns (string[] memory) {
+    function getTasks() external view returns (string[] memory) {
         return users[msg.sender].tasks;
     }
 
@@ -105,7 +110,7 @@ contract Ladderit {
      * The value increases by 1 each time the task is completed. When this value reaches 3, the person who completed the task becomes eligible to receive a Bronze NFT.
      * When this value reaches 5, the person who completed the task becomes eligible to receive a Silver NFT.
      */
-    function completeTask(uint256 taskID) public {
+    function completeTask(uint256 taskID) external {
         require(
             dailyTaskLimit[msg.sender] < dailyLimit,
             "You have completed your task today."
@@ -114,13 +119,13 @@ contract Ladderit {
         dailyTaskLimit[msg.sender]++;
         countTaskCompleted[taskID]++;
         emit TaskCompleted(taskID);
-        if (countTaskCompleted[taskID] == 3) {
+        if (countTaskCompleted[taskID] == 1) {
             earnBronzeNFT();
         }
         if (countTaskCompleted[taskID] == 5) {
             earnSilverNFT();
         }
-         if (countTaskCompleted[taskID] == 7) {
+        if (countTaskCompleted[taskID] == 7) {
             earnGoldNFT();
         }
     }
@@ -130,35 +135,30 @@ contract Ladderit {
      * @dev To be able to check if the task has been completed daily, it is assigned to dailyTaskLimit because when the dailyTaskLimit is 1,
      *  it means that the task has been completed for that day. By using the 'if' keyword, if the value is 1, it returns true; otherwise, it returns false.
      */
-    function isTaskCompleted() public view returns (bool) {
+    function isTaskCompleted() external view returns (bool) {
         return dailyTaskLimit[msg.sender] == 1;
     }
 
-    function resetDailyLimit() public {
+    function resetDailyLimit() external {
         dailyTaskLimit[msg.sender] = 0;
     }
 
-    function earnBronzeNFT() public {
-        nftContract.safeMint(msg.sender, tokenId);
-        tokenId++;
+    function earnBronzeNFT() private {
+        nftContract.mint();
+        coinContract.coinMint(10);
     }
 
     function earnSilverNFT() private {
-        nftContract.safeMint(msg.sender, tokenId);
-        tokenId++;
-    } 
-
-
-    function earnGoldNFT() public {
-        nftContract.safeMint(msg.sender, tokenId);
-        tokenId++;
+        nftContract.mint();
+        coinContract.coinMint(20);
     }
 
-    function onERC721Received(address, address, uint256) external pure returns (bytes4) {
-    return bytes4(keccak256("onERC721Received(address,address,uint256)"));
+    function earnGoldNFT() private {
+        nftContract.mint();
+        coinContract.coinMint(30);
     }
 
-    function balanceOf(address account) public view returns (uint256){
+    function balanceOf(address account) external view returns (uint256) {
         return nftContract.balanceOf(account);
     }
 }
