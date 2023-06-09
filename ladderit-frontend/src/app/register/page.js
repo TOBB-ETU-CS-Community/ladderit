@@ -1,10 +1,14 @@
 "use client";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ContextAPI } from "../../../context/ContextProvider";
 
 export default function Page() {
   const [text, setText] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const { contractInstance, getProviderOrSigner } = useContext(ContextAPI);
 
   const handleOnChange = (e) => {
     setText(e.target.value);
@@ -12,28 +16,39 @@ export default function Page() {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    await getUserName(text);
-    load();
+    try {
+      const signer = await getProviderOrSigner(true);
+      const contract = await contractInstance(signer);
+      const tx = await contract.getUserName(text);
+      setLoading(true);
+      handleProgression();
+      await tx.wait();
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  // const load = () => {
-  //   if (isLoading) {
-  //     toast("Transaction has sent", {
-  //       position: "top-right",
-  //       autoClose: 2000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: false,
-  //       draggable: false,
-  //       progress: undefined,
-  //       theme: "light",
-  //     });
-  //   }
-  // };
+  const handleProgression = () => {
+    if (loading) {
+      toast("Transaction has been sent", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <form className="w-1/2 h-72 p-12 flex flex-col justify-between bg-ultraViolet border border-solid border-ultraViolet rounded-md">
+      <form
+        className="w-1/2 h-72 p-12 flex flex-col justify-between bg-ultraViolet border border-solid border-ultraViolet rounded-md"
+        onSubmit={handleOnSubmit}>
         <h2 className="text-2xl text-bgColor text-center">Register</h2>
         <label htmlFor="username" className="text-bgColor">
           Username:

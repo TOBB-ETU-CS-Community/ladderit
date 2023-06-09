@@ -33,8 +33,6 @@ export function ContextProvider({ children }) {
     setAddress(initialAddress);
   };
 
-  console.log(address);
-
   const contractInstance = (providerOrSigner) => {
     return new Contract(
       MAIN_CONTRACT_ADDRESS,
@@ -48,7 +46,6 @@ export function ContextProvider({ children }) {
       await getProviderOrSigner();
       await getAddress();
       setWalletConnected(true);
-      console.log("Clicked");
     } catch (err) {
       console.error(err);
     }
