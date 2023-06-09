@@ -1,7 +1,7 @@
 "use client";
 import "./globals.css";
 import Navbar from "../../components/Navbar";
-import { ThirdwebProvider } from "@thirdweb-dev/react";
+import { ContextProvider } from "../../context/ContextProvider";
 
 export const metadata = {
   title: "Create Next App",
@@ -10,13 +10,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
-        <ThirdwebProvider activeChain="mumbai">
+    <ContextProvider>
+      <html lang="en">
+        <body>
           <Navbar />
           {children}
-        </ThirdwebProvider>
-      </body>
-    </html>
+        </body>
+      </html>
+    </ContextProvider>
   );
 }
