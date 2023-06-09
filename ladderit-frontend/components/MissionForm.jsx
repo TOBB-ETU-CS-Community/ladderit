@@ -1,14 +1,28 @@
 "use client";
+import { useContext, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ContextAPI } from "../context/ContextProvider";
 
 export default function MissionForm({ text, setText, setMissions, missions }) {
-  const handleFormSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+  const { contractInstance, getProviderOrSigner } = useContext(ContextAPI);
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (text.length < 3) {
       return handleLessText();
     }
-    setMissions((prev) => [...prev, text]);
+    try {
+      const signer = await getProviderOrSigner(true);
+      const contract = await contractInstance(signer);
+      const tx = await contract.addTask(text);
+      setLoading(true);
+      handleProgression();
+      await tx.wait();
+      setLoading(false);
+      setMissions((prev) => [...prev, text]);
+    } catch (error) {}
   };
 
   const handleText = (e) => {
@@ -33,6 +47,21 @@ export default function MissionForm({ text, setText, setMissions, missions }) {
   const handleClick = () => {
     if (missions.length > 4) {
       toast.error("You reached the mission limit", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
+  const handleProgression = () => {
+    if (loading) {
+      toast("Transaction has been sent", {
         position: "top-right",
         autoClose: 2000,
         hideProgressBar: false,
