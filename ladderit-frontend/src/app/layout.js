@@ -12,7 +12,7 @@ export default function RootLayout({ children }) {
   return (
     <ContextProvider>
       <html lang="en">
-        <body>
+        <body suppressHydrationWarning={true}>
           <Navbar />
           {children}
         </body>

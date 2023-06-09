@@ -1,8 +1,13 @@
 "use client";
 import { useContext, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ContextAPI } from "../context/ContextProvider";
+import {
+  limitMissionToastError,
+  loadNotification,
+  missionToastError,
+} from "../utils/notifications";
 
 export default function MissionForm({ text, setText, setMissions, missions }) {
   const [loading, setLoading] = useState(false);
@@ -18,11 +23,12 @@ export default function MissionForm({ text, setText, setMissions, missions }) {
       const contract = await contractInstance(signer);
       const tx = await contract.addTask(text);
       setLoading(true);
-      handleProgression();
       await tx.wait();
       setLoading(false);
       setMissions((prev) => [...prev, text]);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleText = (e) => {
@@ -31,46 +37,19 @@ export default function MissionForm({ text, setText, setMissions, missions }) {
 
   const handleLessText = () => {
     if (text.length < 3) {
-      toast.error("You have to enter a mission", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-      });
+      missionToastError();
     }
   };
 
   const handleClick = () => {
     if (missions.length > 4) {
-      toast.error("You reached the mission limit", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-      });
+      limitMissionToastError();
     }
   };
 
   const handleProgression = () => {
     if (loading) {
-      toast("Transaction has been sent", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-      });
+      loadNotification();
     }
   };
 

@@ -1,8 +1,9 @@
 "use client";
 import { useState, useContext } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ContextAPI } from "../../../context/ContextProvider";
+import { loadNotification } from "../../../utils/notifications";
 
 export default function Page() {
   const [text, setText] = useState("");
@@ -31,16 +32,7 @@ export default function Page() {
 
   const handleProgression = () => {
     if (loading) {
-      toast("Transaction has been sent", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-      });
+      loadNotification();
     }
   };
 

@@ -8,7 +8,7 @@ export default function Home() {
   const [missions, setMissions] = useState([]);
   const [text, setText] = useState("");
   const [username, setUsername] = useState("");
-  const { contractInstance, getProviderOrSigner, address } =
+  const { contractInstance, getProviderOrSigner, address, walletConnected } =
     useContext(ContextAPI);
 
   const getUsername = async () => {
@@ -25,7 +25,7 @@ export default function Home() {
 
   useEffect(() => {
     getUsername();
-  }, []);
+  }, [walletConnected]);
 
   return (
     <>
