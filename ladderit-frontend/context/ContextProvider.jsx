@@ -48,6 +48,7 @@ export function ContextProvider({ children }) {
       await getProviderOrSigner();
       await getAddress();
       setWalletConnected(true);
+      console.log("Clicked");
     } catch (err) {
       console.error(err);
     }
