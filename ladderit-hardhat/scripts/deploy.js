@@ -1,24 +1,36 @@
+const { ethers } = require("hardhat");
+
 async function main() {
-  // The oracle address on Polygon Mumbai
-  // See https://docs.chain.link/chainlink-functions/supported-networks
-  // for a list of supported networks and addresses.
-  const oracleAddress = "0xeA6721aC65BCeD841B8ec3fc5fEdeA6141a0aDE4";
+  // ERC20 contract deploying...
+  const ladderitCoinContractFactory = await ethers.getContractFactory(
+    "LadderItCoin"
+  );
+  console.log("Deploying coin contract...");
+  const ladderitCoinContract = await ladderitCoinContractFactory.deploy();
+  await ladderitCoinContract.deployed();
+  console.log(`Coin contract deployed to: ${ladderitCoinContract.address}`);
 
-  // Set your contract name.
-  const contractName = "FunctionsConsumer";
-  //const contractName = "MyFirstContract"
+  // ERC721 contract deploying...
+  const metadataURL = "ipfs://Qme57ZKVb2yTsxAj8yBUr46Ag9yh6BEW9LeXksoyNoBd9z";
+  const ladderitNFTContractFactory = await ethers.getContractFactory(
+    "LadderItNFT"
+  );
+  console.log("Deploying NFT contract...");
+  const ladderitNFTContract = await ladderitNFTContractFactory.deploy(
+    metadataURL
+  );
+  await ladderitNFTContract.deployed();
+  console.log(`NFT contract deployed to: ${ladderitNFTContract.address}`);
 
-  const [deployer] = await ethers.getSigners();
-
-  console.log("Deploying contracts with the account:", deployer.address);
-
-  console.log("Account balance:", (await deployer.getBalance()).toString());
-
-  const consumerContract = await ethers.getContractFactory(contractName);
-
-  const deployedContract = await consumerContract.deploy(oracleAddress);
-
-  console.log("Deployed Functions Consumer address:", deployedContract.address);
+  // Main contract deploying...
+  const ladderitContractFactory = await ethers.getContractFactory("Ladderit");
+  console.log("Deploying contract...");
+  const ladderitContract = await ladderitContractFactory.deploy(
+    ladderitNFTContract.address,
+    ladderitCoinContract.address
+  );
+  await ladderitContract.deployed();
+  console.log(`Contract deployed to: ${ladderitContract.address}`);
 }
 
 main()

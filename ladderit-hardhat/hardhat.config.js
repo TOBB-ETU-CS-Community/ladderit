@@ -1,82 +1,17 @@
-require("@chainlink/env-enc").config();
 require("@nomicfoundation/hardhat-toolbox");
+require("dotenv").config({ path: ".env" });
 
-/**
- * @type import('hardhat/config').HardhatUserConfig
- */
+const ALCHEMY_HTTP_URL = process.env.ALCHEMY_HTTP_URL;
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
+
+/** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  defaultNetwork: "polygonMumbai",
+  solidity: "0.8.17",
+  defaultNetwork: "sepolia",
   networks: {
-    hardhat: {
-      // // If you want to do some forking, uncomment this
-      // forking: {
-      //   url: MAINNET_RPC_URL
-      // }
+    sepolia: {
+      url: ALCHEMY_HTTP_URL,
+      accounts: [PRIVATE_KEY],
     },
-    localhost: {},
-    polygonMumbai: {
-      url: process.env.POLYGON_MUMBAI_RPC_URL,
-      accounts: [process.env.PRIVATE_KEY],
-      saveDeployments: true,
-    },
-    ethereumSepolia: {
-      url: process.env.ETHEREUM_SEPOLIA_RPC_URL || "",
-      accounts: [process.env.PRIVATE_KEY],
-      saveDeployments: true,
-    },
-    avalancheFuji: {
-      url: process.env.AVALANCHE_FUJI_RPC_URL || "",
-      accounts: [process.env.PRIVATE_KEY],
-      saveDeployments: true,
-    },
-  },
-  solidity: {
-    compilers: [
-      {
-        version: "0.8.17",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 1_000,
-          },
-        },
-      },
-      {
-        version: "0.8.7",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 1_000,
-          },
-        },
-      },
-      {
-        version: "0.7.0",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 1_000,
-          },
-        },
-      },
-      {
-        version: "0.6.6",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 1_000,
-          },
-        },
-      },
-      {
-        version: "0.4.24",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 1_000,
-          },
-        },
-      },
-    ],
   },
 };

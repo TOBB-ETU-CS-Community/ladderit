@@ -3,7 +3,6 @@ pragma solidity 0.8.17;
 
 interface IMyNFT {
     function balanceOf(address owner) external view returns (uint256);
-
     function mint() external;
 }
 
@@ -49,8 +48,8 @@ contract Ladderit {
         user.tasks.push(_task);
     }
 
-    function getTasks() external view returns (string[] memory) {
-        return users[msg.sender].tasks;
+    function getTasks(address user) external view returns (string[] memory) {
+        return users[user].tasks;
     }
 
     function delTask(uint256 taskIndex) external returns (string memory) {
@@ -151,7 +150,8 @@ contract Ladderit {
     function earnSilverNFT() private {
         nftContract.mint();
         coinContract.coinMint(20);
-    }
+    } 
+
 
     function earnGoldNFT() private {
         nftContract.mint();
