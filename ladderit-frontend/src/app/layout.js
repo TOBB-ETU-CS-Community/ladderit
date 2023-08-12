@@ -1,7 +1,8 @@
 "use client";
 import "./globals.css";
 import Navbar from "../../components/Navbar";
-import { ContextProvider } from "../../context/ContextProvider";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
+import { Sepolia } from "@thirdweb-dev/chains";
 
 export const metadata = {
   title: "Create Next App",
@@ -10,13 +11,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ContextProvider>
+    <ThirdwebProvider
+      activeChain={Sepolia}
+      clientId="b119ec5ba98f85ef8edf0347e1c2c589">
       <html lang="en">
         <body suppressHydrationWarning={true}>
           <Navbar />
           {children}
         </body>
       </html>
-    </ContextProvider>
+    </ThirdwebProvider>
   );
 }
