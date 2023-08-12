@@ -4,10 +4,17 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ContextAPI } from "../../../context/ContextProvider";
 import { loadNotification } from "../../../utils/notifications";
+import { useContractWrite, useContract, Web3Button } from "@thirdweb-dev/react";
+import { MAIN_CONTRACT_ADDRESS } from "../../../constants/index";
 
 export default function Page() {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
+  const { contract } = useContract(MAIN_CONTRACT_ADDRESS);
+  const { mutateAsync, isLoading, error } = useContractWrite(
+    contract,
+    "getUserName"
+  );
 
   const { contractInstance, getProviderOrSigner } = useContext(ContextAPI);
 
@@ -17,17 +24,6 @@ export default function Page() {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const signer = await getProviderOrSigner(true);
-      const contract = await contractInstance(signer);
-      const tx = await contract.getUserName(text);
-      setLoading(true);
-      handleProgression();
-      await tx.wait();
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   const handleProgression = () => {
@@ -51,9 +47,12 @@ export default function Page() {
           value={text}
           onChange={handleOnChange}
         />
-        <button className="mx-auto py-2 w-1/2 bg-bgColor rounded-3xl hover:bg-[#6A666C] hover:text-bgColor">
+        <Web3Button
+          contractAddress={MAIN_CONTRACT_ADDRESS}
+          action={() => mutateAsync({ args: [text] })}
+          className="mx-auto py-2 w-1/2 bg-bgColor rounded-3xl hover:bg-[#6A666C] hover:text-bgColor">
           Submit
-        </button>
+        </Web3Button>
         <ToastContainer />
       </form>
     </div>
