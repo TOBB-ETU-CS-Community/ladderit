@@ -1,22 +1,21 @@
 "use client";
-import { useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ContextAPI } from "../../../context/ContextProvider";
-import { loadNotification } from "../../../utils/notifications";
+import {
+  loadNotification,
+  successNotification,
+} from "../../../utils/notifications";
 import { useContractWrite, useContract, Web3Button } from "@thirdweb-dev/react";
 import { MAIN_CONTRACT_ADDRESS } from "../../../constants/index";
 
 export default function Page() {
   const [text, setText] = useState("");
-  const [loading, setLoading] = useState(false);
   const { contract } = useContract(MAIN_CONTRACT_ADDRESS);
   const { mutateAsync, isLoading, error } = useContractWrite(
     contract,
-    "getUserName"
+    "setUsername"
   );
-
-  const { contractInstance, getProviderOrSigner } = useContext(ContextAPI);
 
   const handleOnChange = (e) => {
     setText(e.target.value);
@@ -27,10 +26,14 @@ export default function Page() {
   };
 
   const handleProgression = () => {
-    if (loading) {
+    if (isLoading) {
       loadNotification();
     }
   };
+
+  useEffect(() => {
+    handleProgression();
+  }, [isLoading]);
 
   return (
     <div className="flex justify-center items-center min-h-screen">
@@ -50,7 +53,8 @@ export default function Page() {
         <Web3Button
           contractAddress={MAIN_CONTRACT_ADDRESS}
           action={() => mutateAsync({ args: [text] })}
-          className="mx-auto py-2 w-1/2 bg-bgColor rounded-3xl hover:bg-[#6A666C] hover:text-bgColor">
+          className="mx-auto py-2 w-1/2 bg-bgColor rounded-3xl hover:bg-[#6A666C] hover:text-bgColor"
+          onSuccess={(result) => successNotification}>
           Submit
         </Web3Button>
         <ToastContainer />

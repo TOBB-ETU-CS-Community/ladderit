@@ -1,0 +1,31 @@
+{
+  "chainIds": [
+    80001
+  ],
+  "contracts": [
+    {
+      "address": "0x34FCBBe9D8e7D918C152112793ec47501173D4b0",
+      "chainId": 80001
+    },
+    {
+      "address": "0xA0426208eb9B3dC623Dd9b16e95d7Ab923D26ade",
+      "chainId": 80001
+    },
+    {
+      "address": "0x4799e4CC89e309e77CD044e7Bd9CD266CF6C4a34",
+      "chainId": 80001
+    },
+    {
+      "address": "0xcA1840F0b3AEB21500b8022723856dE759935193",
+      "chainId": 80001
+    },
+    {
+      "address": "0x10720968b88136B6DFe92C5cDc1DA2b16fE03622",
+      "chainId": 80001
+    },
+    {
+      "address": "0xC69b1c028E9d7AED1578Af0dFfF21F7725edac50",
+      "chainId": 80001
+    }
+  ]
+}

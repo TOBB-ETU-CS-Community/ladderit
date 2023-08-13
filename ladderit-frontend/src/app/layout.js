@@ -2,7 +2,7 @@
 import "./globals.css";
 import Navbar from "../../components/Navbar";
 import { ThirdwebProvider } from "@thirdweb-dev/react";
-import { Sepolia } from "@thirdweb-dev/chains";
+import { Mumbai } from "@thirdweb-dev/chains";
 
 export const metadata = {
   title: "Create Next App",
@@ -12,7 +12,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ThirdwebProvider
-      activeChain={Sepolia}
+      activeChain={Mumbai}
       clientId="b119ec5ba98f85ef8edf0347e1c2c589">
       <html lang="en">
         <body suppressHydrationWarning={true}>
