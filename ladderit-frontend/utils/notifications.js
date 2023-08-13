@@ -27,7 +27,7 @@ export const limitMissionToastError = () => {
 };
 
 export const loadNotification = () => {
-  toast("Transaction has been sent", {
+  toast("Transaction has been sendind", {
     position: "top-right",
     autoClose: 2000,
     hideProgressBar: false,

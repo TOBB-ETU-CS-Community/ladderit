@@ -1,33 +1,24 @@
 "use client";
-import { useContext, useState } from "react";
+import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ContextAPI } from "../context/ContextProvider";
-import {
-  limitMissionToastError,
-  loadNotification,
-  missionToastError,
-} from "../utils/notifications";
+import { loadNotification, missionToastError } from "../utils/notifications";
 
-export default function MissionForm({ text, setText, setMissions, missions }) {
-  const [loading, setLoading] = useState(false);
-  const { contractInstance, getProviderOrSigner } = useContext(ContextAPI);
+import { useContractWrite, useContract, Web3Button } from "@thirdweb-dev/react";
+import { MAIN_CONTRACT_ADDRESS } from "../constants";
 
-  const handleFormSubmit = async (e) => {
+export default function MissionForm({ text, setText }) {
+  const { contract } = useContract(MAIN_CONTRACT_ADDRESS);
+  const {
+    mutateAsync: addTask,
+    isLoading,
+    error,
+  } = useContractWrite(contract, "addTask");
+
+  const handleFormSubmit = (e) => {
     e.preventDefault();
     if (text.length < 3) {
       return handleLessText();
-    }
-    try {
-      const signer = await getProviderOrSigner(true);
-      const contract = await contractInstance(signer);
-      const tx = await contract.addTask(text);
-      setLoading(true);
-      await tx.wait();
-      setLoading(false);
-      setMissions((prev) => [...prev, text]);
-    } catch (error) {
-      console.error(error);
     }
   };
 
@@ -41,17 +32,15 @@ export default function MissionForm({ text, setText, setMissions, missions }) {
     }
   };
 
-  const handleClick = () => {
-    if (missions.length > 4) {
-      limitMissionToastError();
-    }
-  };
-
   const handleProgression = () => {
-    if (loading) {
+    if (isLoading) {
       loadNotification();
     }
   };
+
+  useEffect(() => {
+    handleProgression();
+  }, [isLoading]);
 
   return (
     <>
@@ -64,11 +53,11 @@ export default function MissionForm({ text, setText, setMissions, missions }) {
           value={text}
           onChange={handleText}
         />
-        <button
-          className="mx-auto py-2 w-1/2 bg-bgColor rounded-3xl hover:bg-[#6A666C] hover:text-bgColor"
-          onClick={handleClick}>
+        <Web3Button
+          contractAddress={MAIN_CONTRACT_ADDRESS}
+          action={() => addTask({ args: [text] })}>
           Add
-        </button>
+        </Web3Button>
         <ToastContainer />
       </form>
     </>
