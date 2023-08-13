@@ -52,6 +52,10 @@ contract Ladderit {
         return users[user].tasks;
     }
 
+    function getUserName(address user) external view returns (string memory) {
+        return users[user].name;
+    }
+
     function delTask(uint256 taskIndex) external returns (string memory) {
         User storage user = users[msg.sender];
         require(taskIndex < user.tasks.length, "Invalid task index");
@@ -66,7 +70,7 @@ contract Ladderit {
      * @dev Cannot register with a previously saved name
      * @param _name name of the user
      */
-    function getUserName(string calldata _name) external {
+    function setUsername(string calldata _name) external {
         User storage user = users[msg.sender];
         require(!isTaken[_name], "Name is already taken");
         user.name = _name;
