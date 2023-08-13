@@ -38,3 +38,16 @@ export const loadNotification = () => {
     theme: "light",
   });
 };
+
+export const successNotification = () => {
+  toast.success("Transaction successfully submitted", {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: false,
+    progress: undefined,
+    theme: "light",
+  });
+};
