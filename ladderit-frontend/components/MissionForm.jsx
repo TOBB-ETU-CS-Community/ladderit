@@ -54,6 +54,7 @@ export default function MissionForm({ text, setText }) {
           onChange={handleText}
         />
         <Web3Button
+          className="mx-auto py-2 w-1/2 bg-bgColor rounded-3xl hover:bg-[#6A666C] hover:text-bgColor"
           contractAddress={MAIN_CONTRACT_ADDRESS}
           action={() => addTask({ args: [text] })}>
           Add
