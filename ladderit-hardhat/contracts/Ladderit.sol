@@ -61,7 +61,10 @@ contract Ladderit {
         require(taskIndex < user.tasks.length, "Invalid task index");
         require(user.client == msg.sender, "You are not allowed");
         string memory selectedTask = user.tasks[taskIndex];
-        delete user.tasks[taskIndex];
+        for(uint i = taskIndex; i < user.tasks.length - 1; i++) {
+            user.tasks[i] = user.tasks[i+1];
+        }
+        user.tasks.pop();
         return selectedTask;
     }
 
